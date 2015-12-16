@@ -1,0 +1,73 @@
+<div id="sbj_filter">
+	<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">과목 필터링</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="/">과별보기<span class="sr-only">(current)</span></a></li>
+         <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">학점별 보기<span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="/credit/1">1학점</a></li>
+            <li><a href="/credit/2">2학점</a></li>
+            <li><a href="/credit/3">3학점</a></li>
+	    <li><a href="/credit/6">6학점(건축)</a></li>
+          </ul>
+        </li>
+      </ul>
+      <form class="navbar-form navbar-left" method="POST" action="/datetime">
+<div id="test_list">
+      <select class="form-control" id="date" name="date">
+  <option value="10">월</option>
+  <option value="20">화</option>
+  <option value="30">수</option>
+  <option value="40">목</option>
+  <option value="50">금</option>
+	</select>
+       
+	   <select class="form-control" id="time" name="time">
+  <option value="1">1교시</option>
+  <option value="2">2교시</option>
+  <option value="3">3교시</option>
+  <option value="4">4교시</option>
+  <option value="5">5교시</option>
+  <option value="6">6교시</option>
+  <option value="7">7교시</option>
+  <option value="8">8교시</option>
+  <option value="9">9교시</option>
+  <option value="a">10교시</option>
+  <option value="b">11교시</option>
+  <option value="c">12교시</option>
+  <option value="d">13교시</option>
+	   </select>
+	   <button type="submit" class="btn btn-default">요일검색</button>
+		</div>
+		
+      </form>
+
+	<div id="search_name">
+	
+	<form class="navbar-form navbar-left" method="POST" action="/namesearch" >
+	<input type="text" class="form-control" name="name" placeholder="검색어를 포함한 과목출력">
+	<button type="submit" class="btn btn-default">과목명 검색</button>
+	</form>
+	</div>
+
+     <ul class="nav navbar-nav navbar-right">
+        <li><a href="/email">수정 및 문의</a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+</div>

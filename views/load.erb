@@ -1,0 +1,110 @@
+<html>
+<body>
+<%
+
+    tmp = 14
+	count = 0
+    subject = []
+	subjnum = []
+	dateRemake = []
+
+	@id.each do |x|
+		url = "http://sws.sunmoon.ac.kr/hae/plsql/p_subject.sbjlist?p_yearseason=201511&p_course_code=#{x["pid"]}Y"
+#	pid = "#{x["pid"]}Y"
+	
+#	params = {}
+#	args = {}
+#	args[:p_yearseason] = '201511'
+#	args[:p_course_code] = pid
+#	params[:params] = args
+
+#response = RestClient.get 'http://sws.sunmoon.ac.kr/hae/plsql/p_subject.sbjlist', params
+		subjnum.clear
+	    subject.clear
+	    dateRemake.clear
+		tmp = 14
+		count = 0
+
+		agent = Mechanize.new
+		page = agent.get url
+		
+		
+		#doc = Nokogiri::HTML(open(url, 'r:binary').read.encode('utf-8','euc-kr'))
+	
+	doc = Nokogiri::HTML(page.content,nil,'euc-kr')
+	doc.xpath('//table[3]/tr/td/input/@value').each do |c|
+			subjnum.push(c.content)
+		end
+ 
+		doc.xpath('//table[3]/tr/td').each_with_index do |y,i|
+		    if 11 < i.to_int
+			   if i.to_int != 12 && i.to_int%12 == 0
+
+			   	 #날짜정보 수정해서 추가함.
+			   	 #subject[]	=> 0grade, 1divider, 2sbjnum, 3divnum, 4sbjtitle, 5credits, 6date, 7professor, 8location, 9remark, 10limitnum, 11datenum)")  
+				 dateRemake = subject[6].split(" ")
+				 date = 0
+				 final = []
+				 dateRemake.each do |z|
+				    
+					div = z.split(",")
+					tmpDiv = div[0].split("",2)
+					div[0] = tmpDiv[0]
+					div.push(tmpDiv[1])
+				 	div.each do |a|
+				 		case a
+				 		when '월'
+				 			date = 10				 
+				 		when '화'
+				 			date = 20
+				 		when '수'
+				 			date = 30
+				 		when '목'
+				 			date = 40
+				 		when '금'
+				 			date = 50
+				 		else
+							case a
+							when '10'
+								final.push(date.to_s+'a')
+							when '11'
+								final.push(date.to_s+'b')
+							when '12'
+								final.push(date.to_s+'c')
+							when '13'
+								final.push(date.to_s+'d')
+							else
+				 				final.push(date + a.to_i)
+							end
+				 		end
+				 	end
+				 end
+
+				 subject.push(final.join(","))
+
+				 $client.query("insert into subject values('#{x["pid"]}','#{subject[0]}','#{subject[1]}','#{subject[2]}','#{subject[3]}','#{subject[4]}','#{subject[5]}','#{subject[6]}','#{subject[7]}','#{subject[9]}','#{subject[10]}','#{subject[11]}','#{subject[12]}')")
+		      		subject.clear
+					if y.content.include? "*"
+						break
+					else
+		       	    	subject.push(y.content)
+					end
+			   elsif y.content.include? "*"
+			   		break
+			   else
+			   		if i.to_int == tmp			
+              			subject[2] = subjnum[count]
+						tmp = tmp+12
+						count = count+1
+					else 
+			   			subject.push(y.content)
+			   		end
+			  	end
+			end
+		end
+	end
+	puts "Done!"
+%>
+</body>
+</html>
+

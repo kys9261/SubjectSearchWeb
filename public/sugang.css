@@ -1,0 +1,23 @@
+.container{
+    margin-top:30px;
+    width: 95%;
+}
+
+.bg-info{
+    padding-top:10px;
+    padding-bottom:10px;
+}
+
+#sub_title > h1{
+    margin-top:40px;
+	margin-bottom:25px;
+}
+
+.panel-body{
+	font-color:white;
+	background-color:#DBEDF7;
+}
+
+#hint {
+	margin-top:80px;
+}

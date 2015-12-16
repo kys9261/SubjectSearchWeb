@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<%= erb :load_external %>
+<body>
+	<div class="container">
+	<div class="jumbotron">
+		<center><h1>이메일 보내기</h1></center>
+	</div>
+<form method="post" action="/email_reg1">
+	<div class="form-group">
+    <label for="InputEmail">Email address</label>
+    <input type="email" class="form-control" id="InputEmail1" name="email" placeholder="Enter email">@sunmoon.ac.kr
+  </div>
+
+  <button type="submit" class="btn btn-default">전송</button>	</form>
+
+</body>
+</html>

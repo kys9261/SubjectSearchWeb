@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+
+ <!-- Latest compiled and minified CSS -->  
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+   
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+ 
+ <!-- Latest compiled and minified JavaScript -->
+ <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+ 
+ <!-- custom css -->
+ <link rel="stylesheet" href="sugang.css">
+ </head>
+<body style="margin-top:30px;">
+<center>
+ <div class="container">
+	<%= erb :filter%>
+<div id="sub_title">
+          <% 
+		  rdate = ""
+		  case @date
+		  		when '10'
+					rdate = "월"
+				when '20'
+					rdate = "화"
+				when '30'
+					rdate = "수"
+				when '40'
+					rdate = "목"
+				when '50'
+					rdate = "금"
+				end
+		
+			rtime = ""
+			case @time
+			when 'a'
+				rtime = "10"
+			when 'b'
+				rtime = "11"
+			when 'c'
+				rtime = "12"
+			when 'd'
+				rtime = "13"
+			else
+				rtime = @time
+			end
+
+%>
+		  <h1><%= rdate %>요일 <%= rtime%>교시  과목</h1>
+      </div>
+  
+     <div id="sub_list">
+      <table class="table table-hover">
+          <tr bgcolor="#DBEDF7">
+              <td align="center">학년구분</td>
+              <td align="center">이수구분</td>
+              <td align="center">교과목번호</td>
+              <td align="center">분반</td>
+             <td align="center">교과목명</td>
+              <td align="center">학점</td>
+              <td align="center">요일/시간</td>
+              <td align="center">담당교수</td>
+              <td align="center">강의실</td>
+              <td align="center">비고</td>
+              <td align="center">제한인원</td>
+          </tr>
+  
+      <% @list.each do |x| %>
+      <tr>
+          <td align="center"><%=x["grade"]%></td>
+          <td align="center"><%=x["divider"]%></td>
+          <td align="center"><%=x["sbjnum"]%></td>
+          <td align="center"><%=x["divnum"]%></td>
+          <td align="center"><%=x["sbjtitle"]%></td>
+          <td align="center"><%=x["credits"]%></td>
+          <td align="center"><%=x["date"]%></td>
+          <td align="center"><%=x["professor"]%></td>
+          <td align="center"><%=x["location"]%></td>
+          <td align="center"><%=x["remark"]%></td>
+          <td align="center"><%=x["limitnum"]%></td>
+      <tr>
+      <% end %>
+      </table>
+      </div>
+  </div>
+  </center>
+</body>
+</html>

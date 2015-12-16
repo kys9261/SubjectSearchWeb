@@ -1,0 +1,64 @@
+<html>
+<head>
+   <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+     
+	   <!-- Latest compiled and minified CSS -->
+	     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+		               
+		     <!-- Optional theme --> 
+			   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+			        
+			     <!-- Latest compiled and minified JavaScript -->
+				 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+				       
+				    <!-- custom css --> 
+				    <link rel="stylesheet" href="../sugang.css">
+</head>
+<body>
+
+<center>
+<div class="container1">
+
+	<div id="sub_title">
+		<% @pid.each do |x| %>
+		<h1><%= x["category_title"]  %></h1>
+		<% end %>
+	</div>
+
+    <div id="sub_list">
+	<table class="table table-hover">
+		<tr bgcolor="#DBEDF7" row-key="-1">
+			<td align="center">학년구분</td>
+			<td align="center">이수구분</td>
+			<td align="center">교과목번호</td>
+			<td align="center">분반</td>
+			<td align="center">교과목명</td>
+			<td align="center">학점</td>
+			<td align="center">요일/시간</td>
+			<td align="center">담당교수</td>
+			<td align="center">강의실</td>
+			<td align="center">비고</td>
+			<td align="center">제한인원</td>
+		</tr>
+	
+	<% @sub.each_with_index do |x, index|%>
+	<tr row-key="<%=index%>" id="<%=x["grade"]+','+x["divider"]+','+x["sbjnum"]+','+x["divnum"]+','+x["sbjtitle"]+','+x["credits"]+','+x["professor"]+','+x["location"]+','+x["remark"]+','+x["limitnum"]+','+x["datenum"]+','+x["date"]%>">
+		<td align="center"><%=x["grade"]%></td>
+		<td align="center"><%=x["divider"]%></td>
+		<td align="center"><%=x["sbjnum"]%></td>
+		<td align="center"><%=x["divnum"]%></td>
+		<td align="center"><%=x["sbjtitle"]%></td>
+		<td align="center"><%=x["credits"]%></td>
+		<td align="center"><%=x["date"]%></td>
+		<td align="center"><%=x["professor"]%></td>
+		<td align="center"><%=x["location"]%></td>
+		<td align="center"><%=x["remark"]%></td>
+		<td align="center"><%=x["limitnum"]%></td>
+	<tr>
+	<% end %>
+	</table>	
+    </div>
+</div>
+</center>
+</body>
+<html>

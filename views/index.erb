@@ -1,0 +1,165 @@
+<html>
+<head>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-45002584-4', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+<script src="http://underscorejs.org/underscore-min.js"></script>
+<!-- custom css -->
+<link rel="stylesheet" href="sugang.css">
+<script>
+
+var timeData = [];
+
+function loadSub(pid){
+	var idx = pid.toString().length;
+
+	if(idx == 2){
+		var url = "/loadSub/0"+pid;
+	}else if(idx == 1){
+		var url = "/loadSub/00"+pid;
+	}else{
+		var url = "/loadSub/"+pid;
+	}
+
+	$.ajax({
+		type:"GET",
+		url:url,
+		success:function(args){
+			$('#hint').hide();
+			$('#center_content').html(args);
+			$('html,body').scrollTop(0);
+			
+			$('.table-hover tr').click(function() {
+           		var rowId = $(this).attr("row-key");
+            		if(rowId != -1){
+						var sbj = $(this).attr("id").split(",");
+						
+						if(timeData.length > 0){
+							for(var i=0; i<timeData.length; i++){
+								
+								if(sbj[2] == timeData[i].sbjnum){
+									alert("같은 과목이 시간표에 있습니다");
+									return false;
+								}else{
+									if(sbj.length == 12){
+										if(sbj[10] == timeData[i].datenum){
+											alert("시간표가 겹치는 과목이 있습니다");
+										}else{
+											addTime(sbj)
+										}
+									}else if(sbj.length > 12){
+										var dateLength = (sbj.length - 10) / 2;
+										var a = sbj.splice(10,10+dateLength/2);
+										var b = a.splice(dateLength, a.length);
+										console.log("d/"+dateLength)
+										console.log("1/"+a);
+										console.log("2/"+b);
+										sbj.push(a);
+										sbj.push(b);
+										console.log(sbj);
+										var compare = _.intersection(sbj[10], timeData[i].datenum);
+										//if commnon.length == 0
+										// add
+										//else 
+										//alert
+										//여기에 시간이 2교시 이상일때 넣으면 됩니다.
+										}
+
+									}
+								}
+							}else{
+							addTime(sbj);
+						}
+				 	
+					}
+						
+
+        	});
+		},
+		error:function(e){
+			alert("서버에 문제가 있습니다. 관리자에게 문의하세요.");
+		}
+	});
+	
+}
+
+var addTime = function(sbj){
+	if(sbj.length == 12){
+		timeData.push({"grade":sbj[0],"divider":sbj[1],"sbjnum":sbj[2],"divnum":sbj[3],"sbjtitle":sbj[4],"credits":sbj[5],"professor":sbj[6],"location":sbj[7],"remark":sbj[8],"limitnum":sbj[9],"datenum":sbj[10],"date":sbj[11]});	
+		$("#"+sbj[10]).html(sbj[4]);			
+	}else{
+		var dateLength = (sbj.length - 10) / 2;
+
+	}
+}
+
+</script>
+
+</head>
+<body>
+<div class="container">
+	<div class="jumbotron">
+		<center>
+  			<h1>2015-1 선문대 과목조회</h1><p></p>
+			<span>업데이트 : <%=$time%></span>
+			<br><span>Made by. YongSeong Kim</span></br>  
+		</center>
+	</div>
+	
+	<%= erb :filter%>
+	
+	<div class="content">
+		<div class="row">
+			<div class="col-md-3">
+				<div id="colum-right" style="width:100%; float:left;">
+					<% @id.each do |x|%>
+					<center><h3>
+						<!--<a href="/loadSub/<%= x["pid"]%>">-->
+						<a href="javascript:loadSub(<%= x["pid"]%>);">
+							<div class="panel panel-defailt">
+								<div class="panel-body"><%=x["category_title"]%>
+								</div>
+							</div>
+						</a>
+					</h3></center>
+		<% end %>
+	
+				</div>
+			</div>
+
+			<div class="col-md-5">
+				<div id="colum-center" style="width:100%; float:left;">
+					<div id="center_content">
+						<center><h1 id="hint">왼쪽에서 전공구분을 선택하세요</h1></center>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div id="colum-left" style="width:100%; float:left;">
+					<div id="left_content">
+						<%= erb :timetable%>
+					</div>
+				</div>
+			</div>
+		</div>
+</div>
+
+</body>
+</html>
